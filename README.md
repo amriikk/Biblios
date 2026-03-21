@@ -68,7 +68,7 @@ The project is divided into five core phases:
 ---
 
 ## 📊 Visuals & Insights
-*(Insert your correlation heatmap or Gradio interface screenshots here to showcase the project!)*
+*(Correlation heatmap + Gradio interface screenshots )*
 
 ---
 
