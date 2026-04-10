@@ -1,75 +1,81 @@
-# Biblios: Semantic Book Discovery Engine
+# Biblios 📚
+### An Intelligent Semantic Discovery Engine
 
-**Biblios** is an intelligent book recommendation system that moves beyond simple keyword matching. By leveraging **Large Language Models (LLMs)** and **Vector Databases**, it understands the "soul" of a book—its themes, emotional resonance, and narrative style—to provide deeply relevant suggestions.
+**Biblios** is a high-performance book recommendation system that transcends traditional keyword-based search. By leveraging **Large Language Models (LLMs)** and **Vector Databases**, it understands the deeper context, themes, and emotional resonance of a narrative to provide truly relevant discoveries.
 
 ---
 
 ## 🛠️ The Tech Stack
 
-* **Language:** Python
+* **Language:** Python 3.13
+* **AI/LLM Frameworks:** LangChain, Hugging Face Transformers
+* **Embedding Model:** `sentence-transformers/all-MiniLM-L6-v2` (Local Execution)
+* **Vector Database:** ChromaDB (via `langchain-chroma`)
 * **Data Science:** Pandas, NumPy, Matplotlib, Seaborn
-* **AI/LLM Frameworks:** LangChain, Transformers (Hugging Face), OpenAI
-* **Vector Store:** ChromaDB (via `langchain-chroma`)
-* **Interface:** Gradio
-* **Environment Management:** python-dotenv
+* **UI Framework:** Gradio
+* **Secrets Management:** `python-dotenv`
 
 ---
 
 ## 🚀 Project Architecture
 
-The project is divided into five core phases:
+The project is structured into five distinct engineering phases:
 
 ### **01. Prepare Text Data**
-* **Cleaning:** Handled missing values and performed feature engineering (e.g., `age_of_book`).
-* **Filtering:** Implemented a 25-word minimum threshold for descriptions to ensure sufficient semantic density for the LLM.
-* **Feature Engineering:** Merged titles and subtitles into a unified `title_and_subtitle` column and created unique "Tag Descriptions" by prepending ISBNs for efficient database indexing.
+* **Exploratory Data Analysis (EDA):** Performed correlation analysis using Spearman heatmaps to ensure data missingness was not biased.
+* **Data Cleaning:** Engineered features like `age_of_book` and `title_and_subtitle` while filtering for semantic density (25-word minimum description threshold).
+* **Tagging:** Prepended unique ISBN identifiers to descriptions to allow for precise metadata retrieval after vector matching.
 
-### **02. Vector Search (Semantic Engine)**
-* **Embeddings:** Converted raw text into high-dimensional vectors using OpenAI's embedding models.
-* **Vector Store:** Indexed the cleaned dataset in **ChromaDB** to enable efficient similarity searching.
-* **Retrieval:** Developed a semantic search function that identifies the "mathematical neighbors" of a user's natural language query.
+### **02. Vector Search (The "Brain")**
+* **Semantic Embeddings:** Swapped OpenAI for a locally-hosted Hugging Face model (`all-MiniLM-L6-v2`) to generate high-dimensional vectors for 5,000+ books.
+* **Indexing:** Utilized **ChromaDB** for efficient K-Nearest Neighbor (KNN) retrieval.
+* **Query Logic:** Implemented a similarity search that translates natural language (e.g., *"a story about redemption in the Arctic"*) into mathematical coordinates to find thematic neighbors.
 
 ### **03. Text Classification**
-* **Zero-Shot Learning:** Utilized the `facebook/bart-large-mnli` model to categorize books into Fiction vs. Non-Fiction without the need for explicit training data.
-* **Data Augmentation:** Used high-confidence AI predictions to fill gaps in the original dataset's categorization, ensuring a complete filtering experience for the user.
+* **Zero-Shot Learning:** Implemented `facebook/bart-large-mnli` to classify books into categories (Fiction vs. Non-Fiction) without the need for pre-labeled training data.
+* **Data Augmentation:** Used model inference to fill gaps in the original dataset's labeling.
 
 ### **04. Sentiment Analysis**
-* **Emotion Detection:** Leveraged a fine-tuned **RoBERTa** model to extract emotional tones such as Joy, Sadness, Surprise, Fear, and Anger.
-* **Nuanced Analysis:** Analyzed sentiment at the sentence level to capture the complex emotional "vibe" of a book, storing the maximum probability scores for each emotion.
+* **Emotion Mapping:** Leveraged a fine-tuned **RoBERTa** model to detect sentence-level sentiment across seven categories (Joy, Fear, Sadness, etc.).
+* **Scoring:** Stored maximum probability scores to allow users to sort recommendations by their desired "vibe."
 
 ### **05. Gradio Dashboard**
-* Created a sleek, user-friendly UI using the **Gradio** "Glass" theme.
-* **Features:**
-    * **Natural Language Input:** Users can describe the *kind* of story they want.
-    * **Dynamic Filtering:** Filter results by AI-defined categories.
-    * **Emotional Sorting:** Sort recommendations by specific "vibe" (e.g., Happy, Suspenseful, Sad).
+* **Interactive UI:** A "Glass" themed dashboard that provides a polished gallery view of book covers and metadata.
+* **Dynamic Controls:** Users can combine semantic queries with category filters and emotional tone sorting.
+
+---
+
+## 🔧 Technical Challenges & Solutions
+
+Building **Biblios** involved solving several real-world engineering obstacles:
+
+* **The Persistence Problem:** Encountered duplicate entries in ChromaDB during re-indexing. Solved by implementing a manual collection wipe/reset logic before indexing runs.
+* **Data Parsing Issues:** Fixed a `ValueError` during ISBN retrieval where CSV export quotes were interfering with integer conversion.
+* **Version Mismatches:** Resolved `langchain` and `pandas` deprecation warnings (specifically the `sep` argument in `to_csv` and `chunk_size` constraints in `CharacterTextSplitter`) by upgrading to modern syntax.
 
 ---
 
 ## ⚙️ Installation & Setup
 
-1.  **Clone the repository:**
+1.  **Clone the Repo:**
     ```bash
     git clone [https://github.com/yourusername/biblios.git](https://github.com/yourusername/biblios.git)
     cd biblios
     ```
 
-2.  **Install dependencies:**
+2.  **Install Dependencies:**
     ```bash
-    pip install pandas seaborn matplotlib langchain transformers python-dotenv gradio openai langchain-chroma langchain-openai
+    pip install pandas seaborn matplotlib langchain-huggingface langchain-chroma sentence-transformers python-dotenv gradio
     ```
 
 3.  **Environment Variables:**
-    Create a `.env` file in the root directory and add your OpenAI API key:
-    ```env
-    OPENAI_API_KEY=your_actual_key_here
-    ```
+    Create a `.env` file (see `.env.example` for the template). **Note:** This project is configured to run Hugging Face embeddings locally, reducing API dependency.
 
 ---
 
-## 📊 Visuals & Insights
-*(Correlation heatmap + Gradio interface screenshots )*
+## 📊 Visuals
+*(Note to Self: Insert your Spearman Correlation Heatmap here to show off the EDA!)*
 
 ---
 
-> **Note:** This project was developed as a deep dive into Semantic Search methodologies and the practical application of LLMs in content discovery.
+> **Note:** This project was developed as a deep dive into Semantic Search and Agentic AI workflows.

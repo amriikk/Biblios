@@ -1,0 +1,14 @@
+# Secrets
+
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# Python Cache
+__pycache__/
+*.pyc
+
+# Data & Temp files (Optional, keeps repo clean)
+tagged_description.txt
+.ipynb_checkpoints/
