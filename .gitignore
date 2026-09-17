@@ -9,6 +9,6 @@ env/
 __pycache__/
 *.pyc
 
-# Data & Temp files (Optional, keeps repo clean)
+# Data & Temp files (eeps repo clean)
 tagged_description.txt
 .ipynb_checkpoints/

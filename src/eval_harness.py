@@ -61,7 +61,7 @@ def evaluate_retrieval(query: str, results: List[Dict]) -> EvalScore:
     """
     
     response = anthropic.messages.create(
-        model="claude-3-haiku-20240307",
+        model="claude-haiku-4-5-20251001",
         max_tokens=300,
         temperature=0.0,
         system="You output strict JSON without markdown formatting.",
@@ -70,7 +70,15 @@ def evaluate_retrieval(query: str, results: List[Dict]) -> EvalScore:
     
     # Parse the JSON response into our Pydantic model
     import json
-    eval_data = json.loads(response.content[0].text)
+    raw_text = response.content[0].text.strip()
+    
+    # Strip markdown code blocks if Claude stubbornly included them
+    if raw_text.startswith("```json"):
+        raw_text = raw_text[7:-3].strip()
+    elif raw_text.startswith("```"):
+        raw_text = raw_text[3:-3].strip()
+        
+    eval_data = json.loads(raw_text)
     
     return EvalScore(
         query=query,
