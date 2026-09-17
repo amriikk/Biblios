@@ -2,11 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from typing import List, Optional
 from langchain_chroma import Chroma
-from langchain_openai import OpenAIEmbeddings
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
+from langchain_huggingface import HuggingFaceEmbeddings # Updated import
 
 # Initialize API
 app = FastAPI(
@@ -15,9 +11,10 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Connect to the persistent vector database we built in the notebook
+# Connect to the persistent vector database using local embeddings
 try:
-    embeddings = OpenAIEmbeddings()
+    # This downloads a lightweight, highly efficient embedding model locally
+    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
     vector_db = Chroma(persist_directory="./chroma_db", embedding_function=embeddings)
 except Exception as e:
     print(f"Failed to load vector database: {e}")
