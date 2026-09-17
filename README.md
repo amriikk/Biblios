@@ -59,7 +59,7 @@ Building **Biblios** involved solving several real-world engineering obstacles:
 
 1.  **Clone the Repo:**
     ```bash
-    git clone [https://github.com/yourusername/biblios.git](https://github.com/yourusername/biblios.git)
+    git clone [https://github.com/amriikk/biblios.git](https://github.com/amriikk/biblios.git)
     cd biblios
     ```
 
@@ -74,7 +74,6 @@ Building **Biblios** involved solving several real-world engineering obstacles:
 ---
 
 ## 📊 Visuals
-*(Note to Self: Insert your Spearman Correlation Heatmap here to show off the EDA!)*
 
 ---
 
